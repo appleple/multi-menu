@@ -3,12 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/hiraku@latest/css/hiraku.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/hiraku@2.1.8/css/hiraku.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
-    <link rel='stylesheet prefetch' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'>
+	<link rel='stylesheet prefetch' href='https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+	<link rel="stylesheet" href="./style.css">
 	<link rel="stylesheet" href="./css/multi-level-menu.css">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Multi Level Menu</title>
+	<title>MultiMenu.js</title>
 </head>
 <body>
     <nav class="navbar navbar-fixed-top navbar-inverse js-fixed-header">
@@ -18,7 +19,7 @@
                     <span class="sr-only">Toggle navigation</span>
                     <span class="hiraku-open-btn-line"></span>
                 </button>
-                <a class="navbar-brand" href="#">hiraku.js</a>
+                <a class="navbar-brand" href="#">MultiMenu.js</a>
             </div>
         </div>
         <!-- /.container -->
@@ -28,7 +29,7 @@
         <div class="row row-offcanvas row-offcanvas-right">
             <div class="col-xs-12 col-sm-9">
                 <div class="jumbotron">
-                    <h1>hiraku.js</h1>
+                    <h1>MultiMenu.js</h1>
                     <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
                 </div>
                 <div class="row">
@@ -165,11 +166,17 @@
 		border-top: none;
 	}
 	</style>
-	<script src="https://unpkg.com/hiraku@latest/js/hiraku.min.js"></script>
+	<script src="https://unpkg.com/hiraku@2.1.8/js/hiraku.min.js"></script>
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
-	new Hiraku('.js-hiraku');
 	new MultiMenu('.js-multi-menu');
+	new Hiraku('.js-offcanvas', {
+		btn: ".js-offcanvas-btn",
+		disableBtn: '.js-collapse',
+		fixedHeader: ".js-fixed-header",
+		direction: "right",
+		breakpoint: 767
+	});
 	</script>
 </body>
 
