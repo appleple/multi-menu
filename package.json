@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config webpack.dev.js",
     "sass": "node-sass ./scss/multi-level-menu.scss ./css/multi-level-menu.css --output-style expanded",
-    "build": "webpack --config webpack.prod.js && cp ./style.css ./dist/style.css",
+    "build": "webpack --config webpack.prod.js",
     "deploy": "np --no-cleanup --no-tests"
   },
   "keywords": [],

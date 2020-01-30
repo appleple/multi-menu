@@ -81,7 +81,7 @@ export const prepend = (element: HTMLElement, string: string) => {
 };
 
 export const matches = (element: HTMLElement | Document, query: string) => {
-  // eslint-disable-next-line
+  // @ts-ignore
   const finds = (element.document || element.ownerDocument).querySelectorAll(query);
   let i = finds.length;
   // eslint-disable-next-line
@@ -90,9 +90,9 @@ export const matches = (element: HTMLElement | Document, query: string) => {
 };
 
 export const findAncestor = (element: HTMLElement | Document, selector: string) => {
-  // eslint-disable-next-line
+  // @ts-ignore
   if (typeof element.closest === 'function') {
-    // eslint-disable-next-line
+    // @ts-ignore
     return element.closest(selector) || null;
   }
   while (element && element !== document) {
