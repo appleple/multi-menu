@@ -1,0 +1,21 @@
+$animation: .3s ease-in-out;
+
+.multi-menu {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.multi-menu ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #FFF;
+  display: block;
+  min-height: 100%;
+  transition: transform $animation;
+  width: 100%;
+  display: block;
+  z-index: attr(data-level);
+}
+
