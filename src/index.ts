@@ -3,6 +3,7 @@ import { addClass, findAncestor, prepend, hasClass } from './utility';
 interface Option {
   backBtnClass: string;
   activeMenuClass: string;
+  disableMenuClass: string;
   collapseClass: string;
   prependHTML: string;
   levelLimit: number;
@@ -10,6 +11,7 @@ interface Option {
 
 const defaultOption = {
   backBtnClass: 'js-menu-back-btn',
+  disableMenuClass: 'js-disable-menu',
   activeMenuClass: 'active',
   collapseClass: 'js-collapse',
   prependHTML: '<li><a href="#" class="js-menu-back-btn">← Back</a></li>',
@@ -35,6 +37,13 @@ export default class MultiMenu {
       let anscestor = ul;
       let match = 'ul ul';
       let flag = false;
+      if (hasClass(ul, this.opt.disableMenuClass)) {
+        const childUls = ul.querySelectorAll('ul');
+        [].forEach.call(childUls, (childUl) => {
+          addClass(childUl, this.opt.disableMenuClass);
+        });
+        return;
+      }
       while (anscestor !== null) {
         level += 1;
         if ( level > this.opt.levelLimit) {
@@ -106,7 +115,9 @@ export default class MultiMenu {
         targetUl.style.display = 'block';
         return;
       }
-      targetUl.style.display = 'none';
+      if (!hasClass(targetUl, this.opt.disableMenuClass)) {
+        targetUl.style.display = 'none';
+      }
     });
   }
 
