@@ -3,7 +3,7 @@ interface Option {
     activeMenuClass: string;
     disableMenuClass: string;
     collapseClass: string;
-    prependHTML: string;
+    prependHTML: (link: HTMLLinkElement) => string;
     levelLimit: number;
 }
 export default class MultiMenu {

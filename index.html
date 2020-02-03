@@ -80,13 +80,13 @@
                             <li><a href="#">About Us</a></li>
                             <li><a href="#">Services</a></li>
                             <li>
-                                <a href="#">Careers　→</a>
+                                <a href="#" data-title="学部">学部 →</a>
                                 <ul>
                                     <li></li>
                                     <li><a href="#" class="back">Main Menu</a></li>
 									<li>
-										<a href="#">Accountant →</a>
-										<ul>
+										<a href="#" data-title="Accountant">Accountant →</a>
+										<ul class="active">
 											<li><a href="#">Budget Analyst</a></li>
 											<li><a href="#">Carpenter</a></li>
 											<li><a href="#">Desktop Publisher</a></li>
@@ -106,7 +106,7 @@
                                 </ul>
                             </li>
                             <li>
-                                <a href="#">Downloads →</a>
+                                <a href="#" data-title="Downloads">Downloads →</a>
                                 <ul>
                                     <li><a href="#" class="back">hogehoge1</a></li>
                                     <li><a href="#" class="back">hogehoge2</a></li>
@@ -170,6 +170,7 @@
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
 	new MultiMenu('.js-multi-menu', {
+		prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.dataset.title}<li>`,
 		// levelLimit: 2
 	});
 	new Hiraku('.js-offcanvas', {

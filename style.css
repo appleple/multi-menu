@@ -20,6 +20,13 @@ footer {
   border-top-right-radius: 0;
 }
 
+.title {
+  text-align: center;
+  font-size: 20px !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
 /*
  * Off Canvas
  * --------------------------------------------------

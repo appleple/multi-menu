@@ -5,7 +5,7 @@ interface Option {
   activeMenuClass: string;
   disableMenuClass: string;
   collapseClass: string;
-  prependHTML: string;
+  prependHTML: (link: HTMLLinkElement) => string;
   levelLimit: number;
 }
 
@@ -14,11 +14,9 @@ const defaultOption = {
   disableMenuClass: 'js-disable-menu',
   activeMenuClass: 'active',
   collapseClass: 'js-collapse',
-  prependHTML: '<li><a href="#" class="js-menu-back-btn">← Back</a></li>',
+  prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li>`,
   levelLimit: Infinity
 }
-
-console.log('test!!!');
 
 export default class MultiMenu {
 
@@ -59,9 +57,6 @@ export default class MultiMenu {
       const parentElement = findAncestor(ul.parentElement, 'ul');
       if (parentElement) {
         ul.dataset.parentId = parentElement.dataset.id;
-        if (this.opt.prependHTML) {
-          prepend(ul, this.opt.prependHTML);
-        }
       }
       ul.dataset.id = `${i}`;
       ul.dataset.level = level;
@@ -83,6 +78,12 @@ export default class MultiMenu {
       ul.style.zIndex = `${maxLevels - parseInt(ul.dataset.level, 10)}`;
       if (ul.previousElementSibling && ul.previousElementSibling.dataset) {
         ul.previousElementSibling.dataset.ulId = ul.dataset.id;
+      }
+      if (this.opt.prependHTML) {
+        const link: HTMLLinkElement = this.multiMenu.querySelector(`[data-ul-id="${ul.dataset.id}"]`);
+        if (link) {
+          prepend(ul, this.opt.prependHTML(link));
+        }
       }
       this.multiMenu.appendChild(ul);
     });
