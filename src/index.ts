@@ -142,29 +142,7 @@ export default class MultiMenu {
     });
   }
 
-  public activateMenu(ulId: string) {
-    const targetUls = this.multiMenu.querySelectorAll('ul');
-    [].forEach.call(targetUls, (targetUl) => {
-      if (ulId === targetUl.dataset.id) {
-        targetUl.style.display = 'block';
-        return;
-      }
-      targetUl.style.display = 'none';
-    });
-  }
-
-  private setMenu() {
-    if (!this.multiMenu) {
-      return;
-    }
-    addClass(this.multiMenu, 'multi-menu');
-    const uls = this.multiMenu.querySelectorAll('ul');
-    this.setLevels(uls);
-    this.flattenList(uls);
-    const links = this.multiMenu.querySelectorAll('a');
-    [].forEach.call(links, (link) => {
-      this.setLink(link);
-    });
+  private setActiveMenu() {
     const newUls = this.multiMenu.querySelectorAll('ul');
     const activeUl = [].find.call(newUls, (newUl) => {
       if (hasClass(newUl, this.opt.activeMenuClass)) {
@@ -192,5 +170,20 @@ export default class MultiMenu {
         targetUl.style.display = 'none';
       }
     });
+  }
+
+  private setMenu() {
+    if (!this.multiMenu) {
+      return;
+    }
+    addClass(this.multiMenu, 'multi-menu');
+    const uls = this.multiMenu.querySelectorAll('ul');
+    this.setLevels(uls);
+    this.flattenList(uls);
+    const links = this.multiMenu.querySelectorAll('a');
+    [].forEach.call(links, (link) => {
+      this.setLink(link);
+    });
+    this.setActiveMenu();
   }
 }
