@@ -11,14 +11,14 @@ export const getWindowWidth = () => {
 
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight || 0;
 
-export const hasClass = (el, className) => {
+export const hasClass = (el: HTMLElement, className: string) => {
   if (el.classList) {
     return el.classList.contains(className);
   }
   return new RegExp(`(^| )${className}( |$)`, 'gi').test(el.className);
 };
 
-export const addClass = (element, className) => {
+export const addClass = (element: HTMLElement, className: string) => {
   if (element.classList) {
     element.classList.add(className);
   } else {
