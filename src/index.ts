@@ -1,12 +1,14 @@
 import { addClass, findAncestor, prepend, hasClass } from './utility';
 
 interface Option {
-  backBtn: string;
+  backBtnClass: string;
+  activeMenuClass: string;
   prependHTML: string;
 }
 
 const defaultOption = {
-  backBtn: '.js-menu-back-btn',
+  backBtnClass: 'js-menu-back-btn',
+  activeMenuClass: 'active',
   prependHTML: '<li><a href="#" class="js-menu-back-btn">← Back</a></li>',
 }
 
@@ -61,7 +63,7 @@ export default class MultiMenu {
   }
 
   private setLink(link: HTMLLinkElement) {
-    if (hasClass(link, this.opt.backBtn.slice(1))) {
+    if (hasClass(link, this.opt.backBtnClass)) {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const ul = findAncestor(link, 'ul');
@@ -103,6 +105,17 @@ export default class MultiMenu {
     });
   }
 
+  public activateMenu(ulId: string) {
+    const targetUls = this.multiMenu.querySelectorAll('ul');
+    [].forEach.call(targetUls, (targetUl) => {
+      if (ulId === targetUl.dataset.id) {
+        targetUl.style.display = 'block';
+        return;
+      }
+      targetUl.style.display = 'none';
+    });
+  }
+
   private setMenu() {
     if (!this.multiMenu) {
       return;
@@ -115,5 +128,13 @@ export default class MultiMenu {
     [].forEach.call(links, (link) => {
       this.setLink(link);
     });
+    const newUls = this.multiMenu.querySelectorAll('ul');
+    const activeUl = [].find.call(newUls, (newUl) => {
+      if (hasClass(newUl, this.opt.activeMenuClass)) {
+        return true;
+      }
+      return false;
+    });
+    
   }
 }
