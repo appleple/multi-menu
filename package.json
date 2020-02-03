@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "type": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "dev": "webpack-dev-server --config webpack.dev.js",
     "sass": "node-sass ./scss/multi-level-menu.scss ./css/multi-level-menu.css --output-style expanded",
     "build": "webpack --config webpack.prod.js",
