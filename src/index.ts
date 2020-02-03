@@ -26,7 +26,7 @@ export default class MultiMenu {
   constructor(selector: string | HTMLElement, option: Partial<Option> = {}) {
     this.multiMenu = typeof selector === 'string' ? document.querySelector(selector) : selector;
     this.opt = { ...defaultOption, ...option };
-    this.setMenu();
+    this.setMenu(this.multiMenu);
   }
 
   private setLevels(uls) {
@@ -89,11 +89,11 @@ export default class MultiMenu {
     });
   }
 
-  private backLink(link: HTMLLinkElement) {
+  private backLink(multiMenu: HTMLElement, link: HTMLLinkElement) {
     const ul = findAncestor(link, 'ul');
     const { parentId } = ul.dataset;
     if (parentId) {
-      const targetUls = this.multiMenu.querySelectorAll('ul');
+      const targetUls = multiMenu.querySelectorAll('ul');
       const parentUl = [].find.call(targetUls, (targetUl) => {
         if (targetUl.dataset.id === parentId) {
           return true;
@@ -107,10 +107,10 @@ export default class MultiMenu {
     }
   }
 
-  private forwardLink(link: HTMLLinkElement) {
+  private forwardLink(multiMenu: HTMLElement, link: HTMLLinkElement) {
     const ul = findAncestor(link, 'ul');
     ul.style.transform = 'translateX(-100%)';
-    const targetUls = this.multiMenu.querySelectorAll('ul');
+    const targetUls = multiMenu.querySelectorAll('ul');
     [].forEach.call(targetUls, (targetUl) => {
       if (link.dataset.ulId === targetUl.dataset.id || targetUl === ul) {
         targetUl.style.display = 'block';
@@ -122,11 +122,11 @@ export default class MultiMenu {
     });
   }
 
-  private setLink(link: HTMLLinkElement) {
+  private setLink(multiMenu: HTMLElement, link: HTMLLinkElement) {
     if (hasClass(link, this.opt.backBtnClass)) {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        this.backLink(link);
+        this.backLink(multiMenu, link);
       });
       addClass(link, this.opt.collapseClass);
     }
@@ -138,19 +138,19 @@ export default class MultiMenu {
     addClass(link, this.opt.collapseClass);
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      this.forwardLink(link);
+      this.forwardLink(multiMenu, link);
     });
   }
 
-  private setActiveMenu() {
-    const newUls = this.multiMenu.querySelectorAll('ul');
+  private setActiveMenu(multiMenu: HTMLElement) {
+    const newUls = multiMenu.querySelectorAll('ul');
     const activeUl = [].find.call(newUls, (newUl) => {
       if (hasClass(newUl, this.opt.activeMenuClass)) {
         return true;
       }
       return false;
     });
-    const targetUls = this.multiMenu.querySelectorAll('ul');
+    const targetUls = multiMenu.querySelectorAll('ul');
     [].forEach.call(targetUls, (targetUl) => {
       if (activeUl === targetUl) {
         targetUl.style.display = 'block';
@@ -161,7 +161,7 @@ export default class MultiMenu {
         while(true) {
           ul.style.transform = 'translateX(-100%)';
           if (ul.dataset.parentId) {
-            ul = this.multiMenu.querySelector(`[data-id="${ul.dataset.parentId}"]`);
+            ul = multiMenu.querySelector(`[data-id="${ul.dataset.parentId}"]`);
           } else {
             break;
           }
@@ -172,18 +172,18 @@ export default class MultiMenu {
     });
   }
 
-  private setMenu() {
-    if (!this.multiMenu) {
+  private setMenu(multiMenu: HTMLElement) {
+    if (!multiMenu) {
       return;
     }
-    addClass(this.multiMenu, 'multi-menu');
-    const uls = this.multiMenu.querySelectorAll('ul');
+    addClass(multiMenu, 'multi-menu');
+    const uls = multiMenu.querySelectorAll('ul');
     this.setLevels(uls);
     this.flattenList(uls);
-    const links = this.multiMenu.querySelectorAll('a');
+    const links = multiMenu.querySelectorAll('a');
     [].forEach.call(links, (link) => {
-      this.setLink(link);
+      this.setLink(multiMenu, link);
     });
-    this.setActiveMenu();
+    this.setActiveMenu(multiMenu);
   }
 }
