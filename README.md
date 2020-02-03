@@ -13,8 +13,8 @@ $ npm install multi-menu --save
 or from cdn
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/multi-menu@0.0.1/css/multi-level-menu.css">
-<script src="https://unpkg.com/multi-menu@0.0.1/bundle/multi-menu.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/multi-menu@0.0.3/css/multi-level-menu.css">
+<script src="https://unpkg.com/multi-menu@0.0.3/bundle/multi-menu.js"></script>
 ```
 
 
