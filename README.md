@@ -71,6 +71,17 @@ new MultiMenu('.js-multi-menu', {
 });
 ```
 
+### When you want to show specific ul first
+
+```html
+<ul class="js-multi-menu">
+  <li>test</li>
+  <ul class="active">
+    <li>test</li>
+  </ul>
+</ul>
+```
+
 
 ## Demo
 
