@@ -5,14 +5,16 @@
 }
 
 .multi-menu ul {
-  position: absolute;
-  top: 0;
-  left: 0;
   background-color: #FFF;
   display: block;
   min-height: 100%;
   transition: transform 0.3s ease-in-out;
   width: 100%;
   display: block;
-  z-index: attr(data-level);
+}
+
+.multi-menu ul[data-id] {
+  position: absolute;
+  top: 0;
+  left: 0;
 }

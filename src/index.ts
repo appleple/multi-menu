@@ -3,14 +3,20 @@ import { addClass, findAncestor, prepend, hasClass } from './utility';
 interface Option {
   backBtnClass: string;
   activeMenuClass: string;
+  collapseClass: string;
   prependHTML: string;
+  levelLimit: number;
 }
 
 const defaultOption = {
   backBtnClass: 'js-menu-back-btn',
   activeMenuClass: 'active',
+  collapseClass: 'js-collapse',
   prependHTML: '<li><a href="#" class="js-menu-back-btn">← Back</a></li>',
+  levelLimit: Infinity
 }
+
+console.log('test!!!');
 
 export default class MultiMenu {
 
@@ -28,10 +34,18 @@ export default class MultiMenu {
       let level = 0;
       let anscestor = ul;
       let match = 'ul ul';
+      let flag = false;
       while (anscestor !== null) {
         level += 1;
+        if ( level > this.opt.levelLimit) {
+          flag = true;
+          break;
+        }
         anscestor = findAncestor(anscestor, match);
         match += ' ul';
+      }
+      if (flag) {
+        return;
       }
       const parentElement = findAncestor(ul.parentElement, 'ul');
       if (parentElement) {
@@ -54,6 +68,9 @@ export default class MultiMenu {
       }
     });
     [].forEach.call(uls, (ul) => {
+      if (!ul.dataset.id) {
+        return;
+      }
       ul.style.zIndex = `${maxLevels - parseInt(ul.dataset.level, 10)}`;
       if (ul.previousElementSibling && ul.previousElementSibling.dataset) {
         ul.previousElementSibling.dataset.ulId = ul.dataset.id;
@@ -62,46 +79,54 @@ export default class MultiMenu {
     });
   }
 
+  private backLink(link: HTMLLinkElement) {
+    const ul = findAncestor(link, 'ul');
+    const { parentId } = ul.dataset;
+    if (parentId) {
+      const targetUls = this.multiMenu.querySelectorAll('ul');
+      const parentUl = [].find.call(targetUls, (targetUl) => {
+        if (targetUl.dataset.id === parentId) {
+          return true;
+        }
+        return false;
+      });
+      parentUl.style.display = 'block';
+      setTimeout(() => {
+        parentUl.style.transform = 'translateX(0)';
+      }, 100);
+    }
+  }
+
+  private forwardLink(link: HTMLLinkElement) {
+    const ul = findAncestor(link, 'ul');
+    ul.style.transform = 'translateX(-100%)';
+    const targetUls = this.multiMenu.querySelectorAll('ul');
+    [].forEach.call(targetUls, (targetUl) => {
+      if (link.dataset.ulId === targetUl.dataset.id || targetUl === ul) {
+        targetUl.style.display = 'block';
+        return;
+      }
+      targetUl.style.display = 'none';
+    });
+  }
+
   private setLink(link: HTMLLinkElement) {
     if (hasClass(link, this.opt.backBtnClass)) {
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const ul = findAncestor(link, 'ul');
-        const { parentId } = ul.dataset;
-        if (parentId) {
-          const targetUls = this.multiMenu.querySelectorAll('ul');
-          const parentUl = [].find.call(targetUls, (targetUl) => {
-            if (targetUl.dataset.id === parentId) {
-              return true;
-            }
-            return false;
-          });
-          parentUl.style.display = 'block';
-          setTimeout(() => {
-            parentUl.style.transform = 'translateX(0)';
-          }, 100);
-        }
+        this.backLink(link);
       });
-      addClass(link, 'js-collapse');
+      addClass(link, this.opt.collapseClass);
     }
 
     if (!link.dataset.ulId) {
       return;
     }
 
-    addClass(link, 'js-collapse');
+    addClass(link, this.opt.collapseClass);
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const ul = findAncestor(link, 'ul');
-      ul.style.transform = 'translateX(-100%)';
-      const targetUls = this.multiMenu.querySelectorAll('ul');
-      [].forEach.call(targetUls, (targetUl) => {
-        if (link.dataset.ulId === targetUl.dataset.id || targetUl === ul) {
-          targetUl.style.display = 'block';
-          return;
-        }
-        targetUl.style.display = 'none';
-      });
+      this.forwardLink(link);
     });
   }
 
@@ -135,6 +160,25 @@ export default class MultiMenu {
       }
       return false;
     });
-    
+    const targetUls = this.multiMenu.querySelectorAll('ul');
+    [].forEach.call(targetUls, (targetUl) => {
+      if (activeUl === targetUl) {
+        targetUl.style.display = 'block';
+        return;
+      }
+      if (activeUl.dataset.parentId === targetUl.dataset.id) {
+        let ul = targetUl;
+        while(true) {
+          ul.style.transform = 'translateX(-100%)';
+          if (ul.dataset.parentId) {
+            ul = this.multiMenu.querySelector(`[data-id="${ul.dataset.parentId}"]`);
+          } else {
+            break;
+          }
+        }
+      } else {
+        targetUl.style.display = 'none';
+      }
+    });
   }
 }

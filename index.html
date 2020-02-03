@@ -169,7 +169,9 @@
 	<script src="https://unpkg.com/hiraku@2.1.8/js/hiraku.min.js"></script>
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
-	new MultiMenu('.js-multi-menu');
+	new MultiMenu('.js-multi-menu', {
+		// levelLimit: 2
+	});
 	new Hiraku('.js-offcanvas', {
 		btn: ".js-offcanvas-btn",
 		disableBtn: '.js-collapse',
