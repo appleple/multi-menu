@@ -77,43 +77,85 @@
                 <div class="list-group js-offcanvas">
                     <nav class="js-multi-menu menu">
                         <ul>
-                            <li><a href="/aboutus">About Us</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li>
-                                <a href="#" data-title="学部">学部 →</a>
-                                <ul>
-                                    <li></li>
-                                    <li><a href="#" class="back">Main Menu</a></li>
+							<li>
+								<a href="/aboutus">Why Selected</a>
+								<ul>
+									<li><a href="#">Construction and Spiritual History</a></li>
+									<li><a href="#">International certification</a></li>
 									<li>
-										<a href="#" data-title="Accountant">Accountant →</a>
-										<ul class="active">
-											<li><a href="#">Budget Analyst</a></li>
-											<li><a href="#">Carpenter</a></li>
-											<li><a href="#">Desktop Publisher</a></li>
-											<li><a href="#">Electrical Engineer</a></li>
+										<a href="#">University Rankings</a>
+										<ul>
+											<li>
+												<a href="#">Active learning</a>
+											</li>
+											<li>
+												<a href="#">Practical education and employment support</a>
+											</li>
+											<li>
+												<a href="#">Global human resource development</a>
+											</li>
+											<li>
+												<a href="#">About MBA</a>
+											</li>
 										</ul>
 									</li>
-                                    <li><a href="#">Financial Analyst</a></li>
-                                    <li><a href="#">Human Resources Specialists</a></li>
-                                    <li><a href="#">Loan Officer</a></li>
-                                    <li><a href="#">Reporter</a></li>
-                                    <li><a href="#">Budget Analyst</a></li>
-                                    <li><a href="#">Carpenter</a></li>
-                                    <li><a href="#">Electrical Engineer</a></li>
-                                    <li><a href="#">Financial Analyst</a></li>
-                                    <li><a href="#">Human Resources Specialists</a></li>
-                                    <li><a href="#">Loan Officer</a></li>
-                                </ul>
-                            </li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">Undergraduate / Graduate</a>
+								<ul>
+									<li>
+										<a href="#" >Management</a>
+									</li>
+									<li>
+										<a href="#"> Commerce
+										</a>
+									  </li>
+									  <li>
+										<a href="#" data-fetch-url="fetch.html"> Economy
+										</a>
+									  </li>
+									  <li>
+										<a href="#"> International
+										</a>
+									  </li>
+									  <li>
+										<a href="#"> 
+											International student
+										</a>
+									  </li>
+									  <li class="c-vertical-menu__item">
+										<a href="#"> MBA
+										</a>
+									  </li>
+									  <li>
+										<a href="#"> Faculty introduction / research papers</a>
+									  </li>
+								</ul>
+							</li>
                             <li>
-                                <a href="#" data-title="Downloads">Downloads →</a>
-                                <ul>
-                                    <li><a href="#" class="back">hogehoge1</a></li>
-									<li><a href="#" class="back">hogehoge2</a></li>
-									<li><a href="#" class="js-fetch-url" data-title="経営学部" data-fetch-url="fetch.html">経営学部　→</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Contact</a></li>
+                                <a href="#">Dormitory / Scholarship</a>
+								<ul>
+									<li><a href="#">Qualification measures course
+									</a></li>
+									<li><a href="#">Overseas internship</a></li>
+									<li><a href="#">Participant's voice</a></li>
+									<li><a href="#">Job hunting seminar</a></li>
+									<li>
+										<a href="#">Dear parents</a>
+										<ul>
+											<li><a href="#">Qualification measures course</a></li>
+											<li><a href="#">Student Voice</a></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="#">event information</a>
+							</li>
+							<li>
+								<a href="#">Admission guidance</a>
+							</li>
                         </ul>
                     </nav>
                 </div>
@@ -166,12 +208,27 @@
 	.menu li:first-child a {
 		border-top: none;
 	}
+	[data-ul-id] {
+		position: relative;
+	}
+	[data-ul-id]:after {
+		content: "";
+		display: block;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 5px 0 5px 10px;
+		border-color: transparent transparent transparent #007bff;
+		position: absolute;
+		right: 10px;
+		top: 10px;
+	}
 	</style>
 	<script src="https://unpkg.com/hiraku@2.1.8/js/hiraku.min.js"></script>
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
 	new MultiMenu('.js-multi-menu', {
-		prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.dataset.title}<li>`,
+		prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.innerHTML}<li>`,
 		// levelLimit: 2
 	});
 	new Hiraku('.js-offcanvas', {

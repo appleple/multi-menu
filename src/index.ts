@@ -127,8 +127,7 @@ export default class MultiMenu {
 
   private fetchList(ul: HTMLUListElement) {
     const links = ul.querySelectorAll('a');
-    const parentLevel = parseInt(ul.dataset.level);
-    [].forEach.call(links, async (link) => {
+    [].forEach.call(links, async (link: HTMLLinkElement) => {
       if (!link || !link.dataset.fetchUrl) {
         return;
       }
@@ -184,8 +183,11 @@ export default class MultiMenu {
       }
       return false;
     });
+    if (!activeUl) {
+      return;
+    }
     const targetUls = this.multiMenu.querySelectorAll('ul');
-    [].forEach.call(targetUls, (targetUl) => {
+    [].forEach.call(targetUls, (targetUl: HTMLUListElement) => {
       if (activeUl === targetUl) {
         targetUl.style.display = 'block';
         return;
@@ -210,7 +212,7 @@ export default class MultiMenu {
     this.setLevels(uls, offset);
     this.flattenList(uls);
     const links = this.multiMenu.querySelectorAll(`a:not(.${this.opt.collapseClass})`);
-    [].forEach.call(links, (link) => {
+    [].forEach.call(links, (link: HTMLLinkElement) => {
       this.setLink(link);
     });
   }
