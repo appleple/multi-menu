@@ -8,14 +8,17 @@ interface Option {
 }
 export default class MultiMenu {
     multiMenu: HTMLElement;
+    childCount: number;
     opt: Option;
     constructor(selector: string | HTMLElement, option?: Partial<Option>);
     private setLevels;
+    private getMaxLevel;
     private flattenList;
     private backLink;
+    private fetchList;
     private forwardLink;
     private setLink;
-    activateMenu(ulId: string): void;
+    private setActiveMenu;
     private setMenu;
 }
 export {};

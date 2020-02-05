@@ -7,7 +7,6 @@ interface Option {
   collapseClass: string;
   prependHTML: (link: HTMLLinkElement) => string;
   levelLimit: number;
-  preFetchLevel: number;
 }
 
 const defaultOption = {
@@ -17,7 +16,6 @@ const defaultOption = {
   collapseClass: 'js-collapse',
   prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li>`,
   levelLimit: Infinity,
-  preFetchLevel: 2
 }
 
 export default class MultiMenu {
@@ -134,14 +132,11 @@ export default class MultiMenu {
       if (!link || !link.dataset.fetchUrl) {
         return;
       }
-      const level = parseInt(ul.dataset.level, 10);
-      if (parentLevel + this.opt.preFetchLevel >= level) {
-        const res = await fetch(link.dataset.fetchUrl);
-        const html = await res.text();
-        link.removeAttribute('data-fetch-url');
-        link.insertAdjacentHTML('afterend', html);
-        this.setMenu(this.multiMenu.querySelectorAll('ul'), parseInt(ul.dataset.level, 10));
-      }
+      const res = await fetch(link.dataset.fetchUrl);
+      const html = await res.text();
+      link.removeAttribute('data-fetch-url');
+      link.insertAdjacentHTML('afterend', html);
+      this.setMenu(this.multiMenu.querySelectorAll('ul'), parseInt(ul.dataset.level, 10));
     });
   }
 
