@@ -30,12 +30,11 @@ export default class MultiMenu {
     this.multiMenu = typeof selector === 'string' ? document.querySelector(selector) : selector;
     this.opt = { ...defaultOption, ...option };
     addClass(this.multiMenu, 'multi-menu');
-    const uls = this.multiMenu.querySelectorAll('ul');
-    this.setMenu([].map.call(uls, ul => ul));
+    this.setMenu(this.multiMenu.querySelectorAll('ul'));
     this.setActiveMenu();
   }
 
-  private setLevels(uls, offset: number) {
+  private setLevels(uls: NodeListOf<HTMLUListElement>, offset: number) {
     [].forEach.call(uls, (ul) => {
       if (ul.dataset.level) {
         return;
@@ -90,7 +89,7 @@ export default class MultiMenu {
     return maxLevels;
   }
 
-  private flattenList(uls) {
+  private flattenList(uls: NodeListOf<HTMLUListElement>) {
     [].forEach.call(uls, (ul) => {
       if (hasClass(ul, 'flattened')) {
         return;
@@ -141,8 +140,7 @@ export default class MultiMenu {
         const html = await res.text();
         link.removeAttribute('data-fetch-url');
         link.insertAdjacentHTML('afterend', html);
-        const uls = this.multiMenu.querySelectorAll('ul');
-        this.setMenu([].map.call(uls, ul => ul), parseInt(ul.dataset.level, 10));
+        this.setMenu(this.multiMenu.querySelectorAll('ul'), parseInt(ul.dataset.level, 10));
       }
     });
   }
@@ -213,7 +211,7 @@ export default class MultiMenu {
     });
   }
 
-  private setMenu(uls: HTMLUListElement[], offset = 0) {
+  private setMenu(uls: NodeListOf<HTMLUListElement>, offset = 0) {
     this.setLevels(uls, offset);
     this.flattenList(uls);
     const links = this.multiMenu.querySelectorAll(`a:not(.${this.opt.collapseClass})`);
