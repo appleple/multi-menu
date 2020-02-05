@@ -5,6 +5,8 @@ interface Option {
   activeMenuClass: string;
   disableMenuClass: string;
   collapseClass: string;
+  flattenedClass: string;
+  fetchAttribute: string;
   prependHTML: (link: HTMLLinkElement) => string;
   levelLimit: number;
 }
@@ -13,7 +15,9 @@ const defaultOption = {
   backBtnClass: 'js-menu-back-btn',
   disableMenuClass: 'js-disable-menu',
   activeMenuClass: 'active',
+  flattenedClass: 'flattened',
   collapseClass: 'js-collapse',
+  fetchAttribute: 'data-fetch-url',
   prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li>`,
   levelLimit: Infinity,
 }
@@ -89,7 +93,7 @@ export default class MultiMenu {
 
   private flattenList(uls: NodeListOf<HTMLUListElement>) {
     [].forEach.call(uls, (ul) => {
-      if (hasClass(ul, 'flattened')) {
+      if (hasClass(ul, this.opt.flattenedClass)) {
         return;
       }
       if (ul.previousElementSibling && ul.previousElementSibling.dataset) {
@@ -102,7 +106,7 @@ export default class MultiMenu {
         }
       }
       this.multiMenu.appendChild(ul);
-      addClass(ul, 'flattened');
+      addClass(ul, this.opt.flattenedClass);
     });
   }
 
@@ -128,12 +132,16 @@ export default class MultiMenu {
   private fetchList(ul: HTMLUListElement) {
     const links = ul.querySelectorAll('a');
     [].forEach.call(links, async (link: HTMLLinkElement) => {
-      if (!link || !link.dataset.fetchUrl) {
+      if (!link) {
         return;
       }
-      const res = await fetch(link.dataset.fetchUrl);
+      const url = link.getAttribute(this.opt.fetchAttribute);
+      if (!url) {
+        return;
+      }
+      const res = await fetch(url);
       const html = await res.text();
-      link.removeAttribute('data-fetch-url');
+      link.removeAttribute(this.opt.fetchAttribute);
       link.insertAdjacentHTML('afterend', html);
       this.setMenu(this.multiMenu.querySelectorAll('ul'), parseInt(ul.dataset.level, 10));
     });

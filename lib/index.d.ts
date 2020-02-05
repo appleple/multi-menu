@@ -3,6 +3,8 @@ interface Option {
     activeMenuClass: string;
     disableMenuClass: string;
     collapseClass: string;
+    flattenedClass: string;
+    fetchAttribute: string;
     prependHTML: (link: HTMLLinkElement) => string;
     levelLimit: number;
 }
