@@ -7,6 +7,7 @@ interface Option {
   collapseClass: string;
   prependHTML: (link: HTMLLinkElement) => string;
   levelLimit: number;
+  preFetchLevel: number;
 }
 
 const defaultOption = {
@@ -15,22 +16,30 @@ const defaultOption = {
   activeMenuClass: 'active',
   collapseClass: 'js-collapse',
   prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li>`,
-  levelLimit: Infinity
+  levelLimit: Infinity,
+  preFetchLevel: 2
 }
 
 export default class MultiMenu {
 
   multiMenu!: HTMLElement;
+  childCount: number = 0;
   opt!: Option;
 
   constructor(selector: string | HTMLElement, option: Partial<Option> = {}) {
     this.multiMenu = typeof selector === 'string' ? document.querySelector(selector) : selector;
     this.opt = { ...defaultOption, ...option };
-    this.setMenu(this.multiMenu);
+    addClass(this.multiMenu, 'multi-menu');
+    const uls = this.multiMenu.querySelectorAll('ul');
+    this.setMenu([].map.call(uls, ul => ul));
+    this.setActiveMenu();
   }
 
-  private setLevels(uls) {
-    [].forEach.call(uls, (ul, i) => {
+  private setLevels(uls, offset: number) {
+    [].forEach.call(uls, (ul) => {
+      if (ul.dataset.level) {
+        return;
+      }
       let level = 0;
       let anscestor = ul;
       let match = 'ul ul';
@@ -58,24 +67,34 @@ export default class MultiMenu {
       if (parentElement) {
         ul.dataset.parentId = parentElement.dataset.id;
       }
-      ul.dataset.id = `${i}`;
-      ul.dataset.level = level;
+      if (!ul.dataset.id) {
+        ul.dataset.id = `${this.childCount}`;
+        this.childCount++;
+      }
+      ul.dataset.level = level + offset;
+    });
+    const maxLevels = this.getMaxLevel();
+    [].forEach.call(uls, ul => {
+      ul.style.zIndex = `${maxLevels - parseInt(ul.dataset.level, 10)}`;
     });
   }
 
-  private flattenList(uls) {
+  private getMaxLevel() {
     let maxLevels = 0;
-    [].forEach.call(uls, (ul) => {
+    [].forEach.call(this.multiMenu.querySelectorAll('ul'), (ul) => {
       const level = parseInt(ul.dataset.level, 10);
       if (level > maxLevels) {
         maxLevels = level;
       }
     });
+    return maxLevels;
+  }
+
+  private flattenList(uls) {
     [].forEach.call(uls, (ul) => {
-      if (!ul.dataset.id) {
+      if (hasClass(ul, 'flattened')) {
         return;
       }
-      ul.style.zIndex = `${maxLevels - parseInt(ul.dataset.level, 10)}`;
       if (ul.previousElementSibling && ul.previousElementSibling.dataset) {
         ul.previousElementSibling.dataset.ulId = ul.dataset.id;
       }
@@ -86,14 +105,15 @@ export default class MultiMenu {
         }
       }
       this.multiMenu.appendChild(ul);
+      addClass(ul, 'flattened');
     });
   }
 
-  private backLink(multiMenu: HTMLElement, link: HTMLLinkElement) {
+  private backLink(link: HTMLLinkElement) {
     const ul = findAncestor(link, 'ul');
     const { parentId } = ul.dataset;
     if (parentId) {
-      const targetUls = multiMenu.querySelectorAll('ul');
+      const targetUls = this.multiMenu.querySelectorAll('ul');
       const parentUl = [].find.call(targetUls, (targetUl) => {
         if (targetUl.dataset.id === parentId) {
           return true;
@@ -104,16 +124,37 @@ export default class MultiMenu {
       setTimeout(() => {
         parentUl.style.transform = 'translateX(0)';
       }, 100);
+      this.fetchList(parentUl);
     }
   }
 
-  private forwardLink(multiMenu: HTMLElement, link: HTMLLinkElement) {
+  private fetchList(ul: HTMLUListElement) {
+    const links = ul.querySelectorAll('a');
+    const parentLevel = parseInt(ul.dataset.level);
+    [].forEach.call(links, async (link) => {
+      if (!link || !link.dataset.fetchUrl) {
+        return;
+      }
+      const level = parseInt(ul.dataset.level, 10);
+      if (parentLevel + this.opt.preFetchLevel >= level) {
+        const res = await fetch(link.dataset.fetchUrl);
+        const html = await res.text();
+        link.removeAttribute('data-fetch-url');
+        link.insertAdjacentHTML('afterend', html);
+        const uls = this.multiMenu.querySelectorAll('ul');
+        this.setMenu([].map.call(uls, ul => ul), parseInt(ul.dataset.level, 10));
+      }
+    });
+  }
+
+  private forwardLink(link: HTMLLinkElement) {
     const ul = findAncestor(link, 'ul');
     ul.style.transform = 'translateX(-100%)';
-    const targetUls = multiMenu.querySelectorAll('ul');
+    const targetUls = this.multiMenu.querySelectorAll('ul');
     [].forEach.call(targetUls, (targetUl) => {
       if (link.dataset.ulId === targetUl.dataset.id || targetUl === ul) {
         targetUl.style.display = 'block';
+        this.fetchList(targetUl);
         return;
       }
       if (!hasClass(targetUl, this.opt.disableMenuClass)) {
@@ -122,13 +163,13 @@ export default class MultiMenu {
     });
   }
 
-  private setLink(multiMenu: HTMLElement, link: HTMLLinkElement) {
+  private setLink(link: HTMLLinkElement) {
     if (hasClass(link, this.opt.backBtnClass)) {
+      addClass(link, this.opt.collapseClass);
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        this.backLink(multiMenu, link);
+        this.backLink(link);
       });
-      addClass(link, this.opt.collapseClass);
     }
 
     if (!link.dataset.ulId) {
@@ -138,19 +179,19 @@ export default class MultiMenu {
     addClass(link, this.opt.collapseClass);
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      this.forwardLink(multiMenu, link);
+      this.forwardLink(link);
     });
   }
 
-  private setActiveMenu(multiMenu: HTMLElement) {
-    const newUls = multiMenu.querySelectorAll('ul');
+  private setActiveMenu() {
+    const newUls = this.multiMenu.querySelectorAll('ul');
     const activeUl = [].find.call(newUls, (newUl) => {
       if (hasClass(newUl, this.opt.activeMenuClass)) {
         return true;
       }
       return false;
     });
-    const targetUls = multiMenu.querySelectorAll('ul');
+    const targetUls = this.multiMenu.querySelectorAll('ul');
     [].forEach.call(targetUls, (targetUl) => {
       if (activeUl === targetUl) {
         targetUl.style.display = 'block';
@@ -161,7 +202,7 @@ export default class MultiMenu {
         while(true) {
           ul.style.transform = 'translateX(-100%)';
           if (ul.dataset.parentId) {
-            ul = multiMenu.querySelector(`[data-id="${ul.dataset.parentId}"]`);
+            ul = this.multiMenu.querySelector(`[data-id="${ul.dataset.parentId}"]`);
           } else {
             break;
           }
@@ -172,18 +213,12 @@ export default class MultiMenu {
     });
   }
 
-  private setMenu(multiMenu: HTMLElement) {
-    if (!multiMenu) {
-      return;
-    }
-    addClass(multiMenu, 'multi-menu');
-    const uls = multiMenu.querySelectorAll('ul');
-    this.setLevels(uls);
+  private setMenu(uls: HTMLUListElement[], offset = 0) {
+    this.setLevels(uls, offset);
     this.flattenList(uls);
-    const links = multiMenu.querySelectorAll('a');
+    const links = this.multiMenu.querySelectorAll(`a:not(.${this.opt.collapseClass})`);
     [].forEach.call(links, (link) => {
-      this.setLink(multiMenu, link);
+      this.setLink(link);
     });
-    this.setActiveMenu(multiMenu);
   }
 }
