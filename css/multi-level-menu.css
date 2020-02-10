@@ -18,3 +18,21 @@
   top: 0;
   left: 0;
 }
+
+[data-ul-id] {
+  position: relative;
+}
+
+.multi-menu-arrow {
+  position: absolute;
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 10px;
+  border-color: transparent transparent transparent #333;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}

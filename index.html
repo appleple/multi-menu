@@ -114,6 +114,7 @@
 									  <li>
 										<a href="#" data-fetch-url="fetch.html"> Economy
 										</a>
+
 									  </li>
 									  <li>
 										<a href="#"> International
@@ -134,7 +135,7 @@
 								</ul>
 							</li>
                             <li>
-                                <a href="#">Dormitory / Scholarship</a>
+                                <a href="/dormitory">Dormitory / Scholarship</a>
 								<ul>
 									<li><a href="#">Qualification measures course
 									</a></li>
@@ -208,27 +209,13 @@
 	.menu li:first-child a {
 		border-top: none;
 	}
-	[data-ul-id] {
-		position: relative;
-	}
-	[data-ul-id]:after {
-		content: "";
-		display: block;
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 5px 0 5px 10px;
-		border-color: transparent transparent transparent #007bff;
-		position: absolute;
-		right: 10px;
-		top: 10px;
-	}
+
 	</style>
 	<script src="https://unpkg.com/hiraku@2.1.8/js/hiraku.min.js"></script>
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
 	new MultiMenu('.js-multi-menu', {
-		prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.innerHTML}<li>`,
+		prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.innerText}<li>`,
 		// levelLimit: 2
 	});
 	new Hiraku('.js-offcanvas', {

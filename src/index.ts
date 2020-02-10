@@ -1,4 +1,4 @@
-import { addClass, findAncestor, prepend, hasClass } from './utility';
+import { addClass, findAncestor, prepend, hasClass, append } from './utility';
 
 interface Option {
   backBtnClass: string;
@@ -7,7 +7,9 @@ interface Option {
   collapseClass: string;
   flattenedClass: string;
   fetchAttribute: string;
+  linkOnToggle: boolean;
   prependHTML: (link: HTMLLinkElement) => string;
+  appendHTML: (link: HTMLLinkElement) => string;
   levelLimit: number;
 }
 
@@ -18,7 +20,9 @@ const defaultOption = {
   flattenedClass: 'flattened',
   collapseClass: 'js-collapse',
   fetchAttribute: 'data-fetch-url',
+  linkOnToggle: false,
   prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li>`,
+  appendHTML: (link) => `<span class="multi-menu-arrow"></span>`,
   levelLimit: Infinity,
 }
 
@@ -98,6 +102,7 @@ export default class MultiMenu {
       }
       if (ul.previousElementSibling && ul.previousElementSibling.dataset) {
         ul.previousElementSibling.dataset.ulId = ul.dataset.id;
+        append(ul.previousElementSibling, this.opt.appendHTML(ul.previousElementSibling));
       }
       if (this.opt.prependHTML) {
         const link: HTMLLinkElement = this.multiMenu.querySelector(`[data-ul-id="${ul.dataset.id}"]`);
@@ -178,8 +183,11 @@ export default class MultiMenu {
 
     addClass(link, this.opt.collapseClass);
     link.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.forwardLink(link);
+      // @ts-ignore
+      if (!this.opt.linkOnToggle || (!link.href || !e.target.dataset.ulId)) {
+        e.preventDefault();
+        this.forwardLink(link);
+      }
     });
   }
 
