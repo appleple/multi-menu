@@ -13,19 +13,6 @@
 	<title>MultiMenu.js</title>
 </head>
 <body>
-    <nav class="navbar navbar-fixed-top navbar-inverse js-fixed-header">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed js-offcanvas-btn">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="hiraku-open-btn-line"></span>
-				</button>
-				<a href="" class=""></a>
-                <a class="navbar-brand" href="#">MultiMenu.js</a>
-            </div>
-        </div>
-        <!-- /.container -->
-    </nav>
     <!-- /.navbar -->
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-right">
@@ -172,12 +159,15 @@
         </footer>
     </div>
 	<style>
+	body {
+		padding-top: 20px;
+	}
 	.multi-menu {
-		height: 100vh;
+		height: 500px;
 	}
 	.menu ul {
 		display: block;
-		/* background: #f0f0ee; */
+		background: #f0f0ee;
 		list-style-type: none;
 		padding-left: 0;
 	}
@@ -203,6 +193,20 @@
 	}
 	.menu li:first-child a {
 		border-top: none;
+	}
+
+	.multi-menu-arrow {
+		position: absolute;
+		content: "";
+		display: block;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 5px 0 5px 10px;
+		border-color: transparent transparent transparent #333;
+		position: absolute;
+		right: 10px;
+		top: 10px;
 	}
 
 	</style>
