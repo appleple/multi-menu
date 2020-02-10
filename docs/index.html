@@ -215,7 +215,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <div class="card-body">
               <p class="card-text">js</p>
-              <pre><code class="js">document.addEventListener("DOMContentLoaded", () =&gt; {
+              <pre><code class="js">
+import MultiMenu from 'multi-menu' // when you use webpack/rollup
+import 'multi-menu/css/multi-menu.css' // when you use webpack/rollup
+
+document.addEventListener("DOMContentLoaded", () =&gt; {
   new MultiMenu('.js-multi-menu')
 });</code></pre>
               <p class="card-text">html</p>
@@ -251,7 +255,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   &lt;li&gt; &lt;a href="#"&gt; Foreign student special course &lt;/a&gt; &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/nav&gt;</code></pre>
-
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h5 class="m-0">Advanced</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">You can fetch more list via <code>data-fetch-url</code></p>
+<pre><code lang="html">&lt;li&gt;&lt;a href="#" data-fetch-url="fetch.html"&gt; Foreign student special course &lt;/a&gt;&lt;/li&gt;</code></pre>
             </div>
           </div>
           <!-- /.row -->
@@ -304,6 +316,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       padding: 15px 10px;
       border: 1px solid #eee;
     }
+    .content-wrapper {
+      padding-bottom: 20px;
+      max-height: calc(100vh - 51px);
+      overflow-y: auto;
+    }
+    
   </style>
   <!-- jQuery -->
   <script src="plugins/jquery/jquery.min.js"></script>
