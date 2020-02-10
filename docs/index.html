@@ -266,6 +266,26 @@ document.addEventListener("DOMContentLoaded", () =&gt; {
 <pre><code lang="html">&lt;li&gt;&lt;a href="#" data-fetch-url="fetch.html"&gt; Foreign student special course &lt;/a&gt;&lt;/li&gt;</code></pre>
             </div>
           </div>
+          <div class="card">
+            <div class="card-header">
+              <h5 class="m-0">Options</h5>
+            </div>
+            <div class="card-body">
+              <p class="card-text">MultiMenu.js also has some options, The Option below is the default</p>
+              <pre><code class="js">new MultiMenu('js-multi-menu', {
+  backBtnClass: 'js-menu-back-btn',
+  disableMenuClass: 'js-disable-menu',
+  activeMenuClass: 'active',
+  flattenedClass: 'flattened',
+  collapseClass: 'js-collapse',
+  fetchAttribute: 'data-fetch-url',
+  linkOnToggle: false,
+  prependHTML: (link) =&gt; `&lt;li&gt;&lt;a href="#" class="js-menu-back-btn"&gt;← Back &lt;/a&gt;&lt;/li&gt;`,
+  appendHTML: (link) =&gt; `&lt;span class="multi-menu-arrow"&gt;/span&gt;`,
+  levelLimit: Infinity, // The depth of the list you want to apply MultiMenu.js
+}</code></pre>
+            </div>
+          </div>
           <!-- /.row -->
         </div><!-- /.container-fluid -->
       </div>
