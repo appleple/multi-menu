@@ -348,6 +348,9 @@ document.addEventListener("DOMContentLoaded", () =&gt; {
       opacity: 1;
       transform: translateY(0);
     }
+    .left.fa-angle-left {
+      margin-right: 20px;
+    }
     
   </style>
   <!-- jQuery -->
@@ -359,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () =&gt; {
   <script src="multi-menu.js"></script>
   <script>
     new MultiMenu('.js-multi-menu', {
-      prependHTML: (link) => `<li class="nav-item"><a href="#" class="nav-link js-menu-back-btn">← ${link.innerText}</a></li>`,
+      prependHTML: (link) => `<li class="nav-item"><a href="#" class="nav-link js-menu-back-btn"><i class="left fas fa-angle-left"></i> ${link.innerText}</a></li>`,
       appendHTML: (link) => `<i class="right fas fa-angle-left"></i>`
     });
   </script>
