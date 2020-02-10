@@ -83,7 +83,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <i class="nav-icon fas fa-circle"></i>
                 <p>
                   Level 1
-                  <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-pills nav-sidebar flex-column" style="display: block;">
@@ -98,7 +97,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <i class="far fa-circle nav-icon"></i>
                     <p>
                       Level 2
-                      <i class="right fas fa-angle-left"></i>
                     </p>
                   </a>
                   <ul class="nav nav-pills nav-sidebar flex-column" style="display: block;">
@@ -281,7 +279,7 @@ document.addEventListener("DOMContentLoaded", () =&gt; {
   fetchAttribute: 'data-fetch-url',
   linkOnToggle: false,
   prependHTML: (link) =&gt; `&lt;li&gt;&lt;a href="#" class="js-menu-back-btn"&gt;← Back &lt;/a&gt;&lt;/li&gt;`,
-  appendHTML: (link) =&gt; `&lt;span class="multi-menu-arrow"&gt;/span&gt;`,
+  appendHTML: (link) =&gt; `&lt;span class="multi-menu-arrow"&gt;&lt;/span&gt;`,
   levelLimit: Infinity, // The depth of the list you want to apply MultiMenu.js
 }</code></pre>
             </div>
@@ -341,6 +339,15 @@ document.addEventListener("DOMContentLoaded", () =&gt; {
       max-height: calc(100vh - 51px);
       overflow-y: auto;
     }
+    .nav-sidebar li{
+      opacity: .5;
+      transform: translateY(10px);
+      transition: all .5s ease;
+    } 
+    .nav-sidebar.active li{
+      opacity: 1;
+      transform: translateY(0);
+    }
     
   </style>
   <!-- jQuery -->
@@ -352,8 +359,8 @@ document.addEventListener("DOMContentLoaded", () =&gt; {
   <script src="multi-menu.js"></script>
   <script>
     new MultiMenu('.js-multi-menu', {
-      prependHTML: (link) => `<li><a href="#" class="nav-link js-menu-back-btn">← ${link.innerText}</a></li>`,
-      // levelLimit: 2
+      prependHTML: (link) => `<li class="nav-item"><a href="#" class="nav-link js-menu-back-btn">← ${link.innerText}</a></li>`,
+      appendHTML: (link) => `<i class="right fas fa-angle-left"></i>`
     });
   </script>
 </body>

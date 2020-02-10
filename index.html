@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
 	<link rel='stylesheet prefetch' href='https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
 	<link rel="stylesheet" href="./style.css">
-	<link rel="stylesheet" href="./css/multi-level-menu.css">
+	<link rel="stylesheet" href="./css/multi-menu.css">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>MultiMenu.js</title>
 </head>
@@ -209,7 +209,7 @@
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
 	new MultiMenu('.js-multi-menu', {
-		prependHTML: (link) => `<li><a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.innerText}<li>`,
+		prependHTML: (link) => `<li class="nav-item"><a href="#" class="nav-link js-menu-back-btn">← Back </a></li><li class="title">${link.innerText}<li>`,
 		// levelLimit: 2
 	});
 	new Hiraku('.js-offcanvas', {

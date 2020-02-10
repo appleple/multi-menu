@@ -5,7 +5,9 @@ interface Option {
     collapseClass: string;
     flattenedClass: string;
     fetchAttribute: string;
+    linkOnToggle: boolean;
     prependHTML: (link: HTMLLinkElement) => string;
+    appendHTML: (link: HTMLLinkElement) => string;
     levelLimit: number;
 }
 export default class MultiMenu {

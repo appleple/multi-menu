@@ -1,4 +1,4 @@
-import { addClass, findAncestor, prepend, hasClass, append } from './utility';
+import { addClass, removeClass, findAncestor, prepend, hasClass, append } from './utility';
 
 interface Option {
   backBtnClass: string;
@@ -120,6 +120,9 @@ export default class MultiMenu {
     const { parentId } = ul.dataset;
     if (parentId) {
       const targetUls = this.multiMenu.querySelectorAll('ul');
+      [].forEach.call(targetUls, (targetUl) => {
+        removeClass(targetUl, this.opt.activeMenuClass);
+      });
       const parentUl = [].find.call(targetUls, (targetUl) => {
         if (targetUl.dataset.id === parentId) {
           return true;
@@ -128,6 +131,7 @@ export default class MultiMenu {
       });
       parentUl.style.display = 'block';
       setTimeout(() => {
+        addClass(parentUl, this.opt.activeMenuClass);
         parentUl.style.transform = 'translateX(0)';
       }, 100);
       this.fetchList(parentUl);
@@ -157,8 +161,14 @@ export default class MultiMenu {
     ul.style.transform = 'translateX(-100%)';
     const targetUls = this.multiMenu.querySelectorAll('ul');
     [].forEach.call(targetUls, (targetUl) => {
+      removeClass(targetUl, this.opt.activeMenuClass);
       if (link.dataset.ulId === targetUl.dataset.id || targetUl === ul) {
         targetUl.style.display = 'block';
+        setTimeout(()=> {
+          if (link.dataset.ulId === targetUl.dataset.id) {
+            addClass(targetUl, this.opt.activeMenuClass);
+          }
+        }, 100);
         this.fetchList(targetUl);
         return;
       }
@@ -200,6 +210,9 @@ export default class MultiMenu {
       return false;
     });
     if (!activeUl) {
+      if (newUls && newUls[0]) {
+        addClass(newUls[0], this.opt.activeMenuClass);
+      }
       return;
     }
     const targetUls = this.multiMenu.querySelectorAll('ul');
