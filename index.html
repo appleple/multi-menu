@@ -18,7 +18,8 @@
                 <button type="button" class="navbar-toggle collapsed js-offcanvas-btn">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="hiraku-open-btn-line"></span>
-                </button>
+				</button>
+				<a href="" class=""></a>
                 <a class="navbar-brand" href="#">MultiMenu.js</a>
             </div>
         </div>
@@ -30,7 +31,7 @@
             <div class="col-xs-12 col-sm-9">
                 <div class="jumbotron">
                     <h1>MultiMenu.js</h1>
-                    <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
+                    <p>It enables you to create smooth sliding multi level navigation menu like native apps.</p>
                 </div>
                 <div class="row">
                     <div class="col-xs-6 col-lg-4">
@@ -175,25 +176,18 @@
 	}
 	.menu ul {
 		display: block;
-		background: #f0f0ee;
+		/* background: #f0f0ee; */
 		list-style-type: none;
 		padding-left: 0;
 	}
 	
-	.menu ul[data-level="1"] {
-		margin-right: 2px;
-		width: calc(100% - 5px);
-	}
-	
-	.menu ul[data-level="2"] {
-		background-color: #d0d0d0;
-	}
 	
 	.menu li {
 		font-size: 1.5rem;
-		font-weight: bold;
+		font-weight: normal;
 		line-height: 1.6;
 		padding: 0 5px;
+		border-bottom: 1px solid #d0d0d0;
 	}
 	
 	.menu li:last-child a {
@@ -215,7 +209,7 @@
 	<script src="./bundle/multi-menu.js"></script>
 	<script>
 	new MultiMenu('.js-multi-menu', {
-		prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.innerText}<li>`,
+		prependHTML: (link) => `<li><a href="#" class="js-menu-back-btn">← Back </a></li><li class="title">${link.innerText}<li>`,
 		// levelLimit: 2
 	});
 	new Hiraku('.js-offcanvas', {

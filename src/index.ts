@@ -21,7 +21,7 @@ const defaultOption = {
   collapseClass: 'js-collapse',
   fetchAttribute: 'data-fetch-url',
   linkOnToggle: false,
-  prependHTML: (link) => `<a href="#" class="js-menu-back-btn">← Back </a></li>`,
+  prependHTML: (link) => `<li><a href="#" class="js-menu-back-btn">← Back </a></li>`,
   appendHTML: (link) => `<span class="multi-menu-arrow"></span>`,
   levelLimit: Infinity,
 }
